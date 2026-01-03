@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const thoughts = (await getCollection("thoughts"))
+  .sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Thoughts — Market Eclipse">
+  <section class="hero">
+    <h1 class="h1" style="font-size:34px;">Thoughts</h1>
+    <p class="sub">A chronological log of short market observations.</p>
+  </section>
+
+  <div class="list">
+    {thoughts.map((post) => (
+      <a class="card" href={`/thoughts/${post.slug}`}>
+        <div class="card-title">{post.data.title}</div>
+        <div class="card-meta">
+          <span>{post.data.date.toLocaleDateString("en-IN", { year:"numeric", month:"short", day:"2-digit" })}</span>
+          {post.data.tags?.slice(0,4).map((t) => <span class="pill">{t}</span>)}
+        </div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

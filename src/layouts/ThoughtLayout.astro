@@ -1,0 +1,23 @@
+cat > src/layouts/ThoughtLayout.astro << 'EOF'
+---
+import BaseLayout from "./BaseLayout.astro";
+const { title, date, tags = [] } = Astro.props;
+const formatted = new Date(date).toLocaleDateString("en-IN", {
+  year: "numeric", month: "short", day: "2-digit"
+});
+---
+
+<BaseLayout title={`${title} — Market Eclipse`}>
+  <article class="prose">
+    <div class="card" style="margin-bottom:18px;">
+      <div class="card-title" style="font-size:22px;">{title}</div>
+      <div class="card-meta">
+        <span>{formatted}</span>
+        {tags.map((t) => <span class="pill">{t}</span>)}
+      </div>
+    </div>
+
+    <slot />
+  </article>
+</BaseLayout>
+EOF
